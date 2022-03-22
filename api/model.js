@@ -24,8 +24,8 @@ async function insertResponse(response) {
 
     if (response.primary_response) {
         await db("response_pairs").insert({
-            primary_response_id: newResponseObject.response_id,
-            secondary_response_id: response.primary_response.response_id,
+            primary_response_id: response.primary_response,
+            secondary_response_id: newResponseObject.response_id,
         });
     }
 
