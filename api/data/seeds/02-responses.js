@@ -6,7 +6,6 @@ exports.seed = function (knex) {
             stock_name: "Apple, Inc.",
             current_price: 172.56,
             response_value: "over",
-            expiration_time: "2022-03-17T00:00:00.000Z",
             response_length: 15,
         },
         {
@@ -15,7 +14,6 @@ exports.seed = function (knex) {
             stock_name: "Tesla",
             current_price: 420.69,
             response_value: "under",
-            expiration_time: "2022-03-17T08:00:00.000Z",
             response_length: 60,
         },
         {
@@ -24,7 +22,6 @@ exports.seed = function (knex) {
             stock_name: "Tesla",
             current_price: 420.69,
             response_value: "over",
-            expiration_time: "2022-03-17T08:00:00.000Z",
             response_length: 60,
         },
     ]);

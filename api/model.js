@@ -6,7 +6,6 @@ async function insertResponse(response) {
         stock_symbol: response.stock_symbol,
         stock_name: response.stock_name,
         response_length: response.response_length,
-        expiration_time: response.expiration_time,
         response_value: response.response_value,
         current_price: response.current_price,
     };
@@ -17,7 +16,6 @@ async function insertResponse(response) {
         "stock_symbol",
         "stock_name",
         "response_length",
-        "expiration_time",
         "response_value",
         "current_price",
         "created_at",

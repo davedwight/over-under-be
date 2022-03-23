@@ -19,7 +19,6 @@ exports.up = async (knex) => {
             table.string("stock_name", 300).notNullable();
             table.float("current_price").notNullable();
             table.string("response_value").notNullable();
-            table.timestamp("expiration_time").notNullable();
             table.integer("response_length").unsigned().notNullable();
             table.timestamps(false, true);
         })
