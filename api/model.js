@@ -20,6 +20,7 @@ async function insertResponse(response) {
         "expiration_time",
         "response_value",
         "current_price",
+        "created_at",
     ]);
 
     if (response.primary_response) {
