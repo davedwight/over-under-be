@@ -1,7 +1,7 @@
 exports.seed = function (knex) {
     return knex("users").insert([
-        { phone: "8046789413" },
-        { phone: "6467840656" },
-        { phone: "8046789412" },
+        { phone_number: "8046789413" },
+        { phone_number: "6467840656" },
+        { phone_number: "8046789412" },
     ]);
 };

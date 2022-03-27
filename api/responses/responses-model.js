@@ -1,4 +1,4 @@
-const db = require("./data/db-config");
+const db = require("../data/db-config");
 
 async function insertResponse(response) {
     const responseToInsert = {
@@ -39,37 +39,7 @@ async function getResponseById(id) {
     return responseObject;
 }
 
-async function insertUser(user) {
-    const [newUserObject] = await db("users").insert(user, [
-        "user_id",
-        "phone",
-    ]);
-    return newUserObject;
-}
-
-async function getUserById(id) {
-    const userObject = await db("users as u").where("u.user_id", id);
-    return userObject;
-}
-
-// function getAllUsers() {
-//     return db("users");
-// }
-
-// async function insertUser(user) {
-//     // WITH POSTGRES WE CAN PASS A "RETURNING ARRAY" AS 2ND ARGUMENT TO knex.insert/update
-//     // AND OBTAIN WHATEVER COLUMNS WE NEED FROM THE NEWLY CREATED/UPDATED RECORD
-//     const [newUserObject] = await db("users").insert(user, [
-//         "user_id",
-//         "username",
-//         "password",
-//     ]);
-//     return newUserObject; // { user_id: 7, username: 'foo', password: 'xxxxxxx' }
-// }
-
 module.exports = {
     insertResponse,
     getResponseById,
-    insertUser,
-    getUserById,
 };
