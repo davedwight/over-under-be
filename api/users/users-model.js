@@ -1,10 +1,10 @@
 const db = require("../data/db-config");
 
-async function insertUser(user) {
-    const [newUserObject] = await db("users").insert(user, [
-        "user_id",
-        "phone_number",
-    ]);
+async function insertUser(user_phone_number) {
+    const [newUserObject] = await db("users").insert(
+        { phone_number: user_phone_number },
+        ["user_id", "phone_number"]
+    );
     return newUserObject;
 }
 
