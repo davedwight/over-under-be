@@ -7,7 +7,7 @@ function tokenBuilder(user) {
         phone_number: user.phone_number,
     };
     const options = {
-        expiresIn: "1d",
+        expiresIn: "30d",
     };
     const token = jwt.sign(payload, JWT_SECRET, options);
     return token;
