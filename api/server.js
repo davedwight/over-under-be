@@ -5,6 +5,7 @@ const restricted = require("./middleware/restricted");
 
 const UsersRouter = require("./users/users-router");
 const ResponsesRouter = require("./responses/responses-router");
+const { searchVotes } = require("./twilio/send_sms");
 
 const server = express();
 server.use(express.json());
@@ -21,5 +22,9 @@ server.use((err, req, res, next) => {
         stack: err.stack,
     });
 });
+
+setInterval(() => {
+    searchVotes();
+}, 1000);
 
 module.exports = server;

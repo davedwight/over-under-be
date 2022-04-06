@@ -5,8 +5,11 @@ router.post("/", (req, res, next) => {
     Responses.insertResponse(req.body)
         .then((response) => {
             res.status(201).json(response);
+            next();
         })
-        .catch(next);
+        .catch((err) => {
+            console.error(err);
+        });
 });
 
 router.get("/:id", (req, res, next) => {
@@ -14,8 +17,11 @@ router.get("/:id", (req, res, next) => {
     Responses.getResponseById(id)
         .then((response) => {
             res.status(200).json(response);
+            next();
         })
-        .catch(next);
+        .catch((err) => {
+            console.error(err);
+        });
 });
 
 module.exports = router;

@@ -8,6 +8,8 @@ async function insertResponse(response) {
         response_length: response.response_length,
         response_value: response.response_value,
         current_price: response.current_price,
+        expiration_time: response.expiration_time,
+        created_at: response.created_at,
     };
 
     const [newResponseObject] = await db("responses").insert(responseToInsert, [
@@ -19,6 +21,7 @@ async function insertResponse(response) {
         "response_value",
         "current_price",
         "created_at",
+        "expiration_time",
     ]);
 
     if (response.primary_response) {

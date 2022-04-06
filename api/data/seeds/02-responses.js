@@ -1,3 +1,6 @@
+const moment = require("moment");
+const expTime = moment().add(30, "minutes");
+
 exports.seed = function (knex) {
     return knex("responses").insert([
         {
@@ -7,6 +10,8 @@ exports.seed = function (knex) {
             current_price: 172.56,
             response_value: "over",
             response_length: 15,
+            expiration_time: expTime,
+            created_at: moment(),
         },
         {
             user_id: 2,
@@ -15,6 +20,8 @@ exports.seed = function (knex) {
             current_price: 420.69,
             response_value: "under",
             response_length: 60,
+            expiration_time: expTime,
+            created_at: moment(),
         },
         {
             user_id: 3,
@@ -23,6 +30,8 @@ exports.seed = function (knex) {
             current_price: 420.69,
             response_value: "over",
             response_length: 60,
+            expiration_time: expTime,
+            created_at: moment(),
         },
     ]);
 };

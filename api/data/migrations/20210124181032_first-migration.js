@@ -20,7 +20,8 @@ exports.up = async (knex) => {
             table.float("current_price").notNullable();
             table.string("response_value").notNullable();
             table.integer("response_length").unsigned().notNullable();
-            table.timestamps(false, true);
+            table.timestamp("expiration_time").notNullable();
+            table.timestamp("created_at").notNullable();
         })
         .createTable("response_pairs", (table) => {
             table.increments("response_pair_id");
