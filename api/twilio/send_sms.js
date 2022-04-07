@@ -77,7 +77,7 @@ function sendSMS(data) {
                 emojis[data.response_value]
             } | ${data.response_length} mins`,
             from: "+17407933281",
-            to: "+18046789413",
+            to: data.phone_number,
         })
         .then((message) => console.log(message.sid));
 }
