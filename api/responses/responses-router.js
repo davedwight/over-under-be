@@ -24,4 +24,16 @@ router.get("/:id", (req, res, next) => {
         });
 });
 
+router.get("/:response_id/users", (req, res, next) => {
+    const { response_id } = req.params;
+    Responses.getResponseUsers(response_id)
+        .then((response) => {
+            res.status(200).json(response);
+            next();
+        })
+        .catch((err) => {
+            console.error(err);
+        });
+});
+
 module.exports = router;

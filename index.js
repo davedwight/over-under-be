@@ -1,9 +1,12 @@
-require('dotenv').config()
+require("dotenv").config();
+const Listener = require("./api/responses/responses-listener");
 
-const server = require('./api/server')
+const server = require("./api/server");
 
-const port = process.env.PORT
+const port = process.env.PORT;
+
+Listener.listenForUpdates();
 
 server.listen(port, () => {
-  console.log('listening on ' + port)
-})
+    console.log("listening on " + port);
+});
