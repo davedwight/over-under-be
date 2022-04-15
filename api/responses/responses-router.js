@@ -36,4 +36,16 @@ router.get("/:response_id/users", (req, res, next) => {
         });
 });
 
+router.get("/user/:user_id", (req, res, next) => {
+    const { user_id } = req.params;
+    Responses.getResponsesByUser(user_id)
+        .then((response) => {
+            res.status(200).json(response);
+            next();
+        })
+        .catch((err) => {
+            console.error(err);
+        });
+});
+
 module.exports = router;

@@ -1,5 +1,6 @@
 const db = require("../data/db-config");
 const moment = require("moment");
+const ResponseQueries = require("./response-queries");
 
 async function insertResponse(response) {
     const responseToInsert = {
@@ -183,6 +184,29 @@ async function getResponsePairSMSData(responsePairObj) {
     };
 }
 
+async function getResponsesByUser(userId) {
+    const formattedResponses = [];
+
+    const allResponses = await db.raw(ResponseQueries.allResponses(userId));
+
+    allResponses.rows.map((response) => {
+        let formattedEndPrice = response.end_price;
+        if (response.end_price != "PENDING") {
+            formattedEndPrice = parseFloat(response.end_price);
+        }
+        const formattedDate = moment(response.expiration_time).format(
+            "DD MMM YYYY, h:mm a"
+        );
+        formattedResponses.push({
+            ...response,
+            end_price: formattedEndPrice,
+            expiration_time: formattedDate,
+        });
+    });
+
+    return formattedResponses;
+}
+
 module.exports = {
     insertResponse,
     getResponseById,
@@ -192,4 +216,5 @@ module.exports = {
     checkInResponsePairs,
     getExpiredSMSData,
     getResponsePairSMSData,
+    getResponsesByUser,
 };

@@ -1,9 +1,9 @@
-const { onResponseUpdateFunction } = require("../../../knexfile");
-const { onResponseUpdateTrigger } = require("../../../knexfile");
-const { onResponsePairsInsertFunction } = require("../../../knexfile");
-const { onResponsePairsInsertTrigger } = require("../../../knexfile");
-const { dropOnResponseUpdateTrigger } = require("../../../knexfile");
-const { dropOnResponsePairsInsertTrigger } = require("../../../knexfile");
+const { onResponseUpdateFunction } = require("../triggers");
+const { onResponseUpdateTrigger } = require("../triggers");
+const { onResponsePairsInsertFunction } = require("../triggers");
+const { onResponsePairsInsertTrigger } = require("../triggers");
+const { dropOnResponseUpdateTrigger } = require("../triggers");
+const { dropOnResponsePairsInsertTrigger } = require("../triggers");
 
 exports.up = async (knex) => {
     await knex.schema
