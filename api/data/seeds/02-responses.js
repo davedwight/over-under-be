@@ -1,5 +1,5 @@
 const moment = require("moment");
-const expTime = moment().add(30, "minutes");
+const expTime = moment().add(30, "minutes").toISOString();
 
 exports.seed = function (knex) {
     return knex("responses").insert([
@@ -11,8 +11,8 @@ exports.seed = function (knex) {
             response_value: "over",
             response_length: 15,
             expiration_time: expTime,
-            created_at: moment(),
-            updated_at: moment(),
+            created_at: moment().toISOString(),
+            updated_at: moment().toISOString(),
         },
         {
             user_id: 2,
@@ -22,8 +22,8 @@ exports.seed = function (knex) {
             response_value: "under",
             response_length: 60,
             expiration_time: expTime,
-            created_at: moment(),
-            updated_at: moment(),
+            created_at: moment().toISOString(),
+            updated_at: moment().toISOString(),
         },
         {
             user_id: 3,
@@ -33,8 +33,8 @@ exports.seed = function (knex) {
             response_value: "over",
             response_length: 60,
             expiration_time: expTime,
-            created_at: moment(),
-            updated_at: moment(),
+            created_at: moment().toISOString(),
+            updated_at: moment().toISOString(),
         },
     ]);
 };

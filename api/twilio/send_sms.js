@@ -75,8 +75,8 @@ function triggerResponsePairNotification(
     opponentData,
     messageVersion
 ) {
-    const now = moment();
-    const expTime = moment(userData.expiration_time);
+    const now = moment().toISOString();
+    const expTime = moment(userData.expiration_time).toISOString();
     const minsRemaining = expTime.diff(now, "minutes");
 
     const responsePairMessages = {

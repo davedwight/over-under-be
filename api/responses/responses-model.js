@@ -74,14 +74,14 @@ async function addEndPrice(id, end_price) {
         .where("r.response_id", id)
         .update({
             end_price,
-            updated_at: moment(),
+            updated_at: moment().toISOString(),
         });
     return updatedResponse;
 }
 
 async function getExpiredResponses() {
-    const now = moment.utc().format();
-    const oneSec = moment().add(1, "second").utc().format();
+    const now = moment().toISOString();
+    const oneSec = moment().add(1, "second").toISOString();
     const responses = await db("responses as r")
         .join("users as u", "r.user_id", "u.user_id")
         .where("r.expiration_time", ">=", now)
@@ -194,13 +194,9 @@ async function getResponsesByUser(userId) {
         if (response.end_price != "PENDING") {
             formattedEndPrice = parseFloat(response.end_price);
         }
-        const formattedDate = moment(response.expiration_time).format(
-            "DD MMM YYYY, h:mm a"
-        );
         formattedResponses.push({
             ...response,
             end_price: formattedEndPrice,
-            expiration_time: formattedDate,
         });
     });
 
