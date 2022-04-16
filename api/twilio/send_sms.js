@@ -4,6 +4,9 @@ const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require("twilio")(accountSid, authToken);
 const Responses = require("../responses/responses-model");
 const moment = require("moment");
+const PNF = require("google-libphonenumber").PhoneNumberFormat;
+const phoneUtil =
+    require("google-libphonenumber").PhoneNumberUtil.getInstance();
 
 let result = "";
 
@@ -49,10 +52,15 @@ function triggerExpiredNotification(userResponseId, opponentResponseId) {
 }
 
 function sendExpiredSMS(data) {
+    const number = phoneUtil.parseAndKeepRawInput(
+        data.opponent_phone_number,
+        "US"
+    );
+    const formattedOpponentNum = phoneUtil.format(number, PNF.NATIONAL);
     const expiredMessages = {
-        won: `Congrats! You won this OVER / UNDER against ${data.opponent_phone_number}.\n`,
-        lost: `Bummer. You lost this OVER / UNDER against ${data.opponent_phone_number}.\n`,
-        tied: `It's a tie! You tied ${data.opponent_phone_number}. The price of this OVER / UNDER didn't change.\n`,
+        won: `Congrats! You won this OVER / UNDER against ${formattedOpponentNum}.\n`,
+        lost: `Bummer. You lost this OVER / UNDER against ${formattedOpponentNum}.\n`,
+        tied: `It's a tie! You tied ${formattedOpponentNum}. The price of this OVER / UNDER didn't change.\n`,
     };
     console.log(
         `${expiredMessages[data.result]}${data.stock_symbol} | ${
@@ -75,13 +83,18 @@ function triggerResponsePairNotification(
     opponentData,
     messageVersion
 ) {
-    const now = moment().toISOString();
-    const expTime = moment(userData.expiration_time).toISOString();
+    const now = moment();
+    const expTime = moment(userData.expiration_time);
     const minsRemaining = expTime.diff(now, "minutes");
+    const number = phoneUtil.parseAndKeepRawInput(
+        opponentData.phone_number,
+        "US"
+    );
+    const formattedOpponentNum = phoneUtil.format(number, PNF.NATIONAL);
 
     const responsePairMessages = {
-        primary: `It's on! ${opponentData.phone_number} took the other side (${opponentData.response_value}) on this OVER / UNDER, which expires in ${minsRemaining} mins.\n`,
-        secondary: `It's on! You took the other side (${userData.response_value}) of ${opponentData.phone_number}'s bet on this OVER / UNDER, which expires in ${minsRemaining} mins.\n`,
+        primary: `It's on! ${formattedOpponentNum} took the other side (${opponentData.response_value}) on this OVER / UNDER, which expires in ${minsRemaining} mins.\n`,
+        secondary: `It's on! You took the other side (${userData.response_value}) of ${formattedOpponentNum}'s bet on this OVER / UNDER, which expires in ${minsRemaining} mins.\n`,
     };
 
     const messageData = {

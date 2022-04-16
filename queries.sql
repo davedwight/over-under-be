@@ -1,4 +1,4 @@
-WITH orphan_responses AS (
+WITH ORPHAN_RESPONSES AS (
     SELECT
         R.RESPONSE_ID,
         R.STOCK_SYMBOL,
@@ -43,7 +43,6 @@ WITH orphan_responses AS (
 PRIMARY_RESPONSES AS (
     SELECT
         R.RESPONSE_ID,
-        R.USER_ID,
         R.STOCK_SYMBOL,
         R.START_PRICE,
         CASE
@@ -62,15 +61,14 @@ PRIMARY_RESPONSES AS (
             WHEN R.END_PRICE IS NULL THEN 'PENDING'
             ELSE 'LOST'
         END AS RESULT,
-        RP.SECONDARY_RESPONSE_ID AS OPPONENT_ID
+        RP.SECONDARY_RESPONSE_ID AS OPPONENT_RESPONSE_ID
     FROM
         RESPONSE_PAIRS RP
         JOIN RESPONSES R ON RP.PRIMARY_RESPONSE_ID = R.RESPONSE_ID
-        JOIN USERS U ON R.USER_ID = U.USER_ID
     WHERE
         R.USER_ID = ${userId}
 ),
-final_primary_responses AS (
+FINAL_PRIMARY_RESPONSES AS (
     SELECT
         PR.RESPONSE_ID,
         PR.STOCK_SYMBOL,
@@ -83,12 +81,12 @@ final_primary_responses AS (
         PR.RESULT
     FROM
         PRIMARY_RESPONSES PR
-        JOIN USERS U ON PR.OPPONENT_ID = U.USER_ID
+        JOIN RESPONSES OPPONENT_RESPONSES ON PR.OPPONENT_RESPONSE_ID = OPPONENT_RESPONSES.RESPONSE_ID
+        JOIN USERS U ON OPPONENT_RESPONSES.USER_ID = U.USER_ID
 ),
 SECONDARY_RESPONSES AS (
     SELECT
         R.RESPONSE_ID,
-        R.USER_ID,
         R.STOCK_SYMBOL,
         R.START_PRICE,
         CASE
@@ -107,15 +105,14 @@ SECONDARY_RESPONSES AS (
             WHEN R.END_PRICE IS NULL THEN 'PENDING'
             ELSE 'LOST'
         END AS RESULT,
-        RP.SECONDARY_RESPONSE_ID AS OPPONENT_ID
+        RP.PRIMARY_RESPONSE_ID AS OPPONENT_RESPONSE_ID
     FROM
         RESPONSE_PAIRS RP
         JOIN RESPONSES R ON RP.SECONDARY_RESPONSE_ID = R.RESPONSE_ID
-        JOIN USERS U ON R.USER_ID = U.USER_ID
     WHERE
         R.USER_ID = ${userId}
 ),
-final_secondary_responses AS (
+FINAL_SECONDARY_RESPONSES AS (
     SELECT
         SR.RESPONSE_ID,
         SR.STOCK_SYMBOL,
@@ -128,7 +125,8 @@ final_secondary_responses AS (
         SR.RESULT
     FROM
         SECONDARY_RESPONSES SR
-        JOIN USERS U ON SR.OPPONENT_ID = U.USER_ID
+        JOIN RESPONSES OPPONENT_RESPONSES ON SR.OPPONENT_RESPONSE_ID = OPPONENT_RESPONSES.RESPONSE_ID
+        JOIN USERS U ON OPPONENT_RESPONSES.USER_ID = U.USER_ID
 )
 SELECT
     *
@@ -137,17 +135,17 @@ FROM
         SELECT
             *
         FROM
-            orphan_responses
+            ORPHAN_RESPONSES
         UNION
         SELECT
             *
         FROM
-            final_primary_responses
+            FINAL_PRIMARY_RESPONSES
         UNION
         SELECT
             *
         FROM
-            final_secondary_responses
-    ) AS all_responses
+            FINAL_SECONDARY_RESPONSES
+    ) AS ALL_RESPONSES
 ORDER BY
-    expiration_time DESC;
+    EXPIRATION_TIME DESC;
